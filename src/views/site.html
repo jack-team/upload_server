@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/jquery.min.js"></script>
+</head>
+<body>
+
+<input type="file" id="file">
+
+<script>
+    $(function () {
+        var fileInput = $('#file');
+        fileInput.on('change',function (e) {
+            const file = this.files[0];
+            var data = new FormData();
+            data.append('file',file);
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url:'/',
+                data : data,
+                contentType: false,
+                processData: false,
+                success : function (data){
+
+                }.bind(this),
+                error:function(){
+
+                }
+            });
+        })
+    })
+</script>
+</body>
+</html>

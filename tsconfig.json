@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./build",  // TS文件编译后会放入到此文件夹内
+    "baseUrl": ".",
+    "resolveJsonModule":true,
+    "esModuleInterop": true,
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    },
+    "lib": [
+      "es5",
+      "es6",
+      "es7",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
