@@ -32,7 +32,9 @@ koa_ejs_1.default(app, {
 });
 app.use(router_1.default.routes());
 app.use(router_1.default.allowedMethods());
-app.listen(5600, () => {
+const lister = () => {
     console.log(`server on port: 5600`);
-});
+};
+const server = app.listen(5600, lister);
+server.setTimeout(5 * 60 * 1000);
 //# sourceMappingURL=index.js.map

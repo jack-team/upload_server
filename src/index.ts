@@ -38,6 +38,10 @@ koaEjs(app, {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(5600 ,() => {
+const lister = () => {
     console.log(`server on port: 5600`);
-});
+}
+
+const server = app.listen(5600 ,lister);
+
+server.setTimeout(5 * 60 * 1000);

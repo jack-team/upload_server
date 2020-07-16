@@ -8,11 +8,19 @@ import Muter from 'koa-multer';
 
 import path from './../../utils/path';
 
-const setFileName = (req: Request, file: Muter.File, cb: Function) => {
+const setFileName = (
+    req: Request,
+    file: Muter.File,
+    cb: Function
+) => {
     cb(null, file.originalname)
 };
 
-const setDestination = (req: Request, file: Muter.File, cb: Function) => {
+const setDestination = (
+    req: Request,
+    file: Muter.File,
+    cb: Function
+) => {
     const {
         folder
     } = req.headers;
@@ -38,4 +46,6 @@ const upload = Muter({
     storage: Muter.diskStorage(options)
 });
 
-export default upload.array(`file`, 10);
+export default upload.array(
+    `file`, 10
+);
