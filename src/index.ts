@@ -3,6 +3,7 @@ import koaEjs from 'koa-ejs';
 import koaBody from 'koa-body';
 import router from './router';
 import path from './utils/path';
+import cross from './middleware/cross';
 import staticCache from 'koa-static-cache';
 
 const app = new Koa();
@@ -29,7 +30,11 @@ koaEjs(app, {
     root: path(`/src/views`)
 });
 
+app.use(cross);
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(5600);
+app.listen(5600 ,() => {
+    console.log(`server on port: 5600`);
+});

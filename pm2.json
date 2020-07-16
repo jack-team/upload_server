@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "upload-server",
+      "cwd": "./",
+      "script": "./start.sh",
+      "watch": true,
+      "ignore_watch":[".idea"]
+    }
+  ]
+}
