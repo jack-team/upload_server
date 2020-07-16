@@ -1,1 +1,1 @@
-pm2 start ./build/src/index.js
+npm run start:pro

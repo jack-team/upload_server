@@ -9,6 +9,7 @@
     "build": "tsc",
     "start": "pm2 start pm2.json",
     "stop": "pm2 delete upload-server",
+    "start:pro":"node ./build/src/index.js",
     "dev": "node --inspect -r ts-node/register ./src/index.ts"
   },
   "dependencies": {
