@@ -4,9 +4,14 @@ import koaBody from 'koa-body';
 import router from './router';
 import path from './utils/path';
 import cross from './middleware/cross';
+import headers from './middleware/headers';
 import staticCache from 'koa-static-cache';
 
 const app = new Koa();
+
+app.use(cross);
+
+app.use(headers);
 
 app.use(koaBody());
 
@@ -29,8 +34,6 @@ koaEjs(app, {
     viewExt: `html`,
     root: path(`/src/views`)
 });
-
-app.use(cross);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

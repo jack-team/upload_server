@@ -9,8 +9,11 @@ const koa_body_1 = __importDefault(require("koa-body"));
 const router_1 = __importDefault(require("./router"));
 const path_1 = __importDefault(require("./utils/path"));
 const cross_1 = __importDefault(require("./middleware/cross"));
+const headers_1 = __importDefault(require("./middleware/headers"));
 const koa_static_cache_1 = __importDefault(require("koa-static-cache"));
 const app = new koa_1.default();
+app.use(cross_1.default);
+app.use(headers_1.default);
 app.use(koa_body_1.default());
 /*配置静态路径*/
 const staticConfig = {
@@ -27,7 +30,6 @@ koa_ejs_1.default(app, {
     viewExt: `html`,
     root: path_1.default(`/src/views`)
 });
-app.use(cross_1.default);
 app.use(router_1.default.routes());
 app.use(router_1.default.allowedMethods());
 app.listen(5600, () => {
