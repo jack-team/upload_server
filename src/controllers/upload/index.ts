@@ -16,7 +16,7 @@ import * as services from './../../services';
 
 import fileType from './../../utils/fileType';
 
-const uploadPath = path(`/public`);
+const uploadPath = path(`/public/upload`);
 
 const Success = async (ctx: Context) => {
     const {

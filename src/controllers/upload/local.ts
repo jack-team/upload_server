@@ -25,8 +25,18 @@ const setDestination = (
         folder
     } = req.headers;
 
+    const uploadPath = (
+        path(`/public/upload`)
+    )
+
+    /*创建上传文件夹*/
+    if(!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath)
+    }
+
+    /*零时文件夹*/
     const folderPath = (
-        path(`/public/${folder}`)
+        `${uploadPath}/${folder}`
     );
 
     /*不存在则创建*/

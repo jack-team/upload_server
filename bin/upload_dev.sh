@@ -1,0 +1,1 @@
+node --inspect -r ts-node/register ./src/index.ts;

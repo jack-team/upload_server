@@ -4,5 +4,10 @@ import {
 } from 'koa';
 
 export default async (ctx: Context, next: Next) => {
-    await next();
+    try {
+        await next();
+    }
+    catch (e) {
+        console.log(e)
+    }
 }

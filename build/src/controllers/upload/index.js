@@ -29,7 +29,7 @@ const local_1 = __importDefault(require("./local"));
 const path_1 = __importDefault(require("./../../utils/path"));
 const services = __importStar(require("./../../services"));
 const fileType_1 = __importDefault(require("./../../utils/fileType"));
-const uploadPath = path_1.default(`/public`);
+const uploadPath = path_1.default(`/public/upload`);
 const Success = async (ctx) => {
     const { folder: fileMd5 } = ctx.request.headers;
     const { merge, fileName } = ctx.req.body;

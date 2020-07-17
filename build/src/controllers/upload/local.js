@@ -11,7 +11,13 @@ const setFileName = (req, file, cb) => {
 };
 const setDestination = (req, file, cb) => {
     const { folder } = req.headers;
-    const folderPath = (path_1.default(`/public/${folder}`));
+    const uploadPath = (path_1.default(`/public/upload`));
+    /*创建上传文件夹*/
+    if (!fs_1.default.existsSync(uploadPath)) {
+        fs_1.default.mkdirSync(uploadPath);
+    }
+    /*零时文件夹*/
+    const folderPath = (`${uploadPath}/${folder}`);
     /*不存在则创建*/
     if (!fs_1.default.existsSync(folderPath)) {
         fs_1.default.mkdirSync(folderPath);
