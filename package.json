@@ -6,7 +6,9 @@
   "author": "jacker",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev":"pm2 start ./bin/dev.json",
+    "pro":"pm2 start ./bin/pro.json"
   },
   "dependencies": {
     "koa": "^2.13.0",

@@ -25,9 +25,9 @@ app.use(koa_static_cache_1.default(path_1.default(`/static`), staticConfig));
 /*配置模板引擎*/
 koa_ejs_1.default(app, {
     cache: true,
-    debug: true,
     layout: false,
     viewExt: `html`,
+    debug: app.env === `development`,
     root: path_1.default(`/src/views`)
 });
 app.use(router_1.default.routes());

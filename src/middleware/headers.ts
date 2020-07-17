@@ -8,6 +8,9 @@ export default async (ctx: Context, next: Next) => {
         await next();
     }
     catch (e) {
-        console.log(e)
+        ctx.body = {
+            code: 500,
+            message: `${e}`
+        }
     }
 }

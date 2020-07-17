@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "cwd": "./",
+      "watch": true,
+      "name": "upload-dev",
+      "script": "bin/dev.sh",
+      "ignore_watch": [".idea", "public"]
+    }
+  ]
+}

@@ -29,9 +29,9 @@ app.use(staticCache(
 /*配置模板引擎*/
 koaEjs(app, {
     cache: true,
-    debug: true,
     layout: false,
     viewExt: `html`,
+    debug: app.env === `development`,
     root: path(`/src/views`)
 });
 
@@ -42,6 +42,6 @@ const lister = () => {
     console.log(`server on port: 5600`);
 }
 
-const server = app.listen(5600 ,lister);
+const server = app.listen(5600, lister);
 
 server.setTimeout(5 * 60 * 1000);

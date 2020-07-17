@@ -5,7 +5,10 @@ exports.default = async (ctx, next) => {
         await next();
     }
     catch (e) {
-        console.log(e);
+        ctx.body = {
+            code: 500,
+            message: `${e}`
+        };
     }
 };
 //# sourceMappingURL=headers.js.map
