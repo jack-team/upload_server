@@ -757,7 +757,7 @@ var e=require("process"),t=require("./utils"),r=require("./helpers/normalizeHead
 },{"./utils":"Feqj","./helpers/bind":"hRTX","./core/Axios":"trUU","./core/mergeConfig":"fBI1","./defaults":"A14q","./cancel/Cancel":"qFUg","./cancel/CancelToken":"VgQU","./cancel/isCancel":"mXc0","./helpers/spread":"yisB"}],"O4Aa":[function(require,module,exports) {
 module.exports=require("./lib/axios");
 },{"./lib/axios":"Wzmt"}],"w3Sd":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e=t(require("axios"));function t(e){return e&&e.__esModule?e:{default:e}}var r=window.location.href,o=e.default.create({baseURL:"http://localhost:5600"}),a=o.interceptors,s=function(e){var t=e.data,r=t.code,o=t.data;return 200===r?o:Promise.reject(t)};a.response.use(s);var u=o;exports.default=u;
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e=r(require("axios"));function r(e){return e&&e.__esModule?e:{default:e}}var t=window.location.href,a=e.default.create({baseURL:t}),o=a.interceptors,s=function(e){var r=e.data,t=r.code,a=r.data;return 200===t?a:Promise.reject(r)};o.response.use(s);var u=a;exports.default=u;
 },{"axios":"O4Aa"}],"m2rB":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var t=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"";if(!t)return"0 B";var e=Math.floor(Math.log(t)/Math.log(1024));return(t/Math.pow(1024,e)).toPrecision(3)+" "+["B","KB","MB","GB","TB","PB","EB","ZB","YB"][e]};exports.default=t;
 },{}],"kGiw":[function(require,module,exports) {
@@ -774,4 +774,4 @@ module.exports=require("./lib/axios");
 },{"./file":"QtNV"}],"B6dB":[function(require,module,exports) {
 "use strict";var e=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0}),require("babel-polyfill");var r=e(require("vue")),u=e(require("./app.vue"));new r.default({render:function(e){return e(u.default)}}).$mount("#app");
 },{"babel-polyfill":"JIy0","vue":"NtAQ","./app.vue":"wlok"}]},{},["B6dB"], null)
-//# sourceMappingURL=/src.afc6a77a.js.map
+//# sourceMappingURL=/src.e8a01b84.js.map
