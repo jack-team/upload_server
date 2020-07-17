@@ -22,16 +22,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const koa_router_1 = __importDefault(require("koa-router"));
-const crts = __importStar(require("./../controllers"));
-const router = new koa_router_1.default();
-/*渲染首页*/
-router.get(`/`, crts.home);
-/*上传*/
-router.put(`/`, ...crts.upload);
-router.post(`/`, ...crts.upload);
-/*通过md5获取文件*/
-router.post(`/file`, crts.file);
-router.get(`/file`, crts.file);
-exports.default = router;
-//# sourceMappingURL=index.js.map
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("./../utils/path"));
+const Services = __importStar(require("./../services"));
+const uploadPath = path_1.default(`/public/upload`);
+exports.default = async (ctx) => {
+    const { md5, ext } = ctx.request.body;
+    const fileName = (`${md5}.${ext}`);
+    const filePath = (`${uploadPath}/${fileName}`);
+    /*如果当前文件还在本地,删除文件*/
+    if (fs_1.default.existsSync(filePath)) {
+        fs_1.default.unlinkSync(filePath);
+    }
+    const url = (await Services.qiNiu.
+        stat(fileName));
+    ctx.body = {
+        code: 200,
+        data: { url: url }
+    };
+};
+//# sourceMappingURL=file.js.map

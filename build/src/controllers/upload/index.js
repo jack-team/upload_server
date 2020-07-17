@@ -67,7 +67,8 @@ const Success = async (ctx) => {
         mimetype: mime_1.default.getType(filePath) || ``
     };
     try {
-        const url = (await services.qiNiu(file));
+        const url = (await services.
+            qiNiu.upload(file));
         ctx.body = {
             code: 200,
             data: { url: url }
