@@ -1,4 +1,4 @@
-import qiNiu from './qiniu';
+import * as qiNiu from './qiniu';
 
 export {
     qiNiu

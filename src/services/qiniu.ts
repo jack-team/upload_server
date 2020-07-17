@@ -4,7 +4,11 @@ import qiNiu from 'qiniu';
 
 import sizeOf from 'image-size';
 
-import config from './../../config/qn.json';
+import {
+    SCOPE,
+    ACCESS_KEY,
+    SECRET_KEY
+} from './../../config/qn.json';
 
 interface File {
     path: string;
@@ -13,11 +17,17 @@ interface File {
 }
 
 const opts: any = {
-    scope: config.SCOPE
+    scope: SCOPE
 }
 
-const mac = new qiNiu.auth.digest.Mac(
-    config.ACCESS_KEY, config.SECRET_KEY
+const config: any = (
+    new qiNiu.conf.Config()
+);
+
+const mac = (
+    new qiNiu.auth.digest.Mac(
+        ACCESS_KEY, SECRET_KEY
+    )
 );
 
 const putExtra = (
@@ -25,7 +35,11 @@ const putExtra = (
 );
 
 var uploader = (
-    new qiNiu.form_up.FormUploader()
+    new qiNiu.form_up.FormUploader(config)
+);
+
+const bucketManager = (
+    new qiNiu.rs.BucketManager(mac, config)
 );
 
 const getToken = () => (
@@ -35,7 +49,7 @@ const getToken = () => (
 const staticUri = `http://static.yutao2012.com`;
 
 /*上传到七牛云*/
-export default (file: File) => (
+export const upload = (file: File) => (
     new Promise((resolve, reject) => {
         const {
             path,
@@ -45,8 +59,7 @@ export default (file: File) => (
         let search: string = ``;
 
         const isImg: boolean = (
-            file.mimetype.
-            includes('image/')
+            file.mimetype.includes('image/')
         );
 
         if (isImg) {
@@ -69,7 +82,7 @@ export default (file: File) => (
                 resolve(url);
             }
             /*删除文件*/
-            if(fs.existsSync(path)) {
+            if (fs.existsSync(path)) {
                 fs.unlinkSync(path);
             }
         };
@@ -81,3 +94,18 @@ export default (file: File) => (
         );
     })
 );
+
+/*获取文件信息*/
+export const stat = (fileName: string) => (
+    new Promise((resolve) => {
+        const searchCallback = (err: any, body: any, info: any) => {
+            if (!!err) resolve(``);
+            const { statusCode } = info;
+            return statusCode === 200 ?
+                resolve(`${staticUri}/${fileName}`):resolve(``);
+        }
+        bucketManager.stat(
+            SCOPE, fileName, searchCallback
+        );
+    })
+)
