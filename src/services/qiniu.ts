@@ -87,7 +87,7 @@ export const upload = (file: File) => (
 export const stat = (fileName: string) => (
   new Promise((resolve) => {
     const searchCallback = (err: any, body: any, { statusCode }: any) => {
-      const hasFile = !!err || statusCode !== 200;
+      const hasFile = !err && statusCode === 200;
       resolve(hasFile ? `${staticUri}/${fileName}` : '');
     }
     bucketManager.stat(SCOPE, fileName, searchCallback);

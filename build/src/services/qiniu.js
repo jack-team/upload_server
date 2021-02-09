@@ -46,7 +46,7 @@ exports.upload = (file) => (new Promise((resolve, reject) => {
 * */
 exports.stat = (fileName) => (new Promise((resolve) => {
     const searchCallback = (err, body, { statusCode }) => {
-        const hasFile = !!err || statusCode !== 200;
+        const hasFile = !err && statusCode === 200;
         resolve(hasFile ? `${staticUri}/${fileName}` : '');
     };
     bucketManager.stat(qn_json_1.SCOPE, fileName, searchCallback);
