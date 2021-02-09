@@ -1,16 +1,18 @@
 import {
-    Next,
-    Context
+  Next,
+  Context
 } from 'koa';
 
-export default async (ctx: Context, next: Next) => {
-    try {
-        await next();
+export default async (
+  ctx: Context,
+  next: Next
+) => {
+  try {
+    await next();
+  } catch (e) {
+    ctx.body = {
+      code: 500,
+      message: `${e}`
     }
-    catch (e) {
-        ctx.body = {
-            code: 500,
-            message: `${e}`
-        }
-    }
+  }
 }

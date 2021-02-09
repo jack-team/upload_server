@@ -1,7 +1,7 @@
 import {
-    Context
+  Context
 } from 'koa';
 
 export default (ctx: Context) => {
-    ctx.render(`site`);
+  ctx.render(`site`);
 }

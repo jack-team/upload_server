@@ -5,109 +5,91 @@ import qiNiu from 'qiniu';
 import sizeOf from 'image-size';
 
 import {
-    SCOPE,
-    ACCESS_KEY,
-    SECRET_KEY
+  SCOPE,
+  ACCESS_KEY,
+  SECRET_KEY
 } from './../../config/qn.json';
 
 interface File {
-    path: string;
-    mimetype: string;
-    filename: string;
+  path: string;
+  mimetype: string;
+  filename: string;
 }
 
 const opts: any = {
-    scope: SCOPE
+  scope: SCOPE
 }
 
 const config: any = (
-    new qiNiu.conf.Config()
+  new qiNiu.conf.Config()
 );
 
-config.zone = qiNiu.zone.Zone_z1;
-
 const mac = (
-    new qiNiu.auth.digest.Mac(
-        ACCESS_KEY, SECRET_KEY
-    )
+  new qiNiu.auth.digest.Mac(
+    ACCESS_KEY, SECRET_KEY
+  )
 );
 
 const putExtra = (
-    new qiNiu.resume_up.PutExtra()
+  new qiNiu.resume_up.PutExtra()
 );
 
 var uploader = (
-    new qiNiu.form_up.FormUploader(config)
+  new qiNiu.form_up.FormUploader(config)
 );
 
 const bucketManager = (
-    new qiNiu.rs.BucketManager(mac, config)
+  new qiNiu.rs.BucketManager(mac, config)
 );
 
 const getToken = () => (
-    new qiNiu.rs.PutPolicy(opts).uploadToken(mac)
+  new qiNiu.rs.PutPolicy(opts).uploadToken(mac)
 );
 
 const staticUri = `http://static.yutao2012.com`;
 
 /*上传到七牛云*/
 export const upload = (file: File) => (
-    new Promise((resolve, reject) => {
-        const {
-            path,
-            filename
-        } = file;
+  new Promise((resolve, reject) => {
 
-        let search: string = ``;
+    const { path, filename, mimetype } = file;
 
-        const isImg: boolean = (
-            file.mimetype.includes('image/')
-        );
+    let fileUrl = `${staticUri}/${filename}`;
 
-        if (isImg) {
-            const {
-                width,
-                height
-            } = sizeOf.imageSize(path);
-            search = `?w=${width}&h=${height}`;
-        };
+    const uploadCallback = (err: Error, body: any, { statusCode }: any) => {
+      if (!!err || statusCode !== 200) {
+        return reject('文件上传失败');
+      }
 
-        const url: string = (
-            `${staticUri}/${filename}${search}`
-        );
+      const isImage = mimetype.includes('image/');
 
-        const uploadCallback = (e: Error) => {
-            if (!!e) {
-                reject(e.message);
-            }
-            else {
-                resolve(url);
-            }
-            /*删除文件*/
-            if (fs.existsSync(path)) {
-                fs.unlinkSync(path);
-            }
-        };
+      /*
+      * 如果是图片则加上图片的尺寸
+      * */
+      if (isImage) {
+        const { width, height } = sizeOf.imageSize(path);
+        fileUrl = `${fileUrl}?width=${width}&height=${height}`
+      }
 
-        /*上传*/
-        uploader.putFile(
-            getToken(), filename, path,
-            putExtra, uploadCallback
-        );
-    })
+      resolve(fileUrl);
+
+      if (fs.existsSync(path)) fs.unlinkSync(path);
+    };
+
+    uploader.putFile(getToken(), filename, path, putExtra, uploadCallback);
+  })
 );
 
-/*获取文件信息*/
+/*
+* 获取文件是否存在
+* @param fileName 文件名
+* */
 export const stat = (fileName: string) => (
-    new Promise((resolve) => {
-        const searchCallback = (err: any, body: any, info: any) => {
-            if (!!err) resolve(``);
-            const { statusCode } = info;
-            return statusCode === 200 ?
-                resolve(`${staticUri}/${fileName}`):resolve(``);
-        }
-        bucketManager.stat(
-            SCOPE, fileName, searchCallback
-        );
-    })
+  new Promise((resolve) => {
+    const searchCallback = (err: any, body: any, { statusCode }: any) => {
+      const hasFile = !!err || statusCode !== 200;
+      resolve(hasFile ? `${staticUri}/${fileName}` : '');
+    }
+    bucketManager.stat(SCOPE, fileName, searchCallback);
+  })
 )
