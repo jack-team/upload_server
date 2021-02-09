@@ -24,6 +24,8 @@ const config: any = (
   new qiNiu.conf.Config()
 );
 
+config.zone = qiNiu.zone.Zone_z1;
+
 const mac = (
   new qiNiu.auth.digest.Mac(
     ACCESS_KEY, SECRET_KEY

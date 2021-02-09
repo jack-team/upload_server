@@ -12,6 +12,7 @@ const opts = {
     scope: qn_json_1.SCOPE
 };
 const config = (new qiniu_1.default.conf.Config());
+config.zone = qiniu_1.default.zone.Zone_z1;
 const mac = (new qiniu_1.default.auth.digest.Mac(qn_json_1.ACCESS_KEY, qn_json_1.SECRET_KEY));
 const putExtra = (new qiniu_1.default.resume_up.PutExtra());
 var uploader = (new qiniu_1.default.resume_up.ResumeUploader(config));
