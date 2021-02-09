@@ -14,7 +14,7 @@ const opts = {
 const config = (new qiniu_1.default.conf.Config());
 const mac = (new qiniu_1.default.auth.digest.Mac(qn_json_1.ACCESS_KEY, qn_json_1.SECRET_KEY));
 const putExtra = (new qiniu_1.default.resume_up.PutExtra());
-var uploader = (new qiniu_1.default.form_up.FormUploader(config));
+var uploader = (new qiniu_1.default.resume_up.ResumeUploader(config));
 const bucketManager = (new qiniu_1.default.rs.BucketManager(mac, config));
 const getToken = () => (new qiniu_1.default.rs.PutPolicy(opts).uploadToken(mac));
 const staticUri = `http://static.yutao2012.com`;

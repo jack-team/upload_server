@@ -78,12 +78,12 @@ const Success = async (ctx: Context) => {
   }
 
   try {
-    // const url = (
-    //   await services.qiNiu.upload(file)
-    // )
+    const url = (
+      await services.qiNiu.upload(file)
+    )
     ctx.body = {
       code: 200,
-      data: { url: `url` }
+      data: { url: url }
     }
   } catch (e) {
     ctx.body = {

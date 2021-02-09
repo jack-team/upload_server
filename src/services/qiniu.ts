@@ -35,7 +35,7 @@ const putExtra = (
 );
 
 var uploader = (
-  new qiNiu.form_up.FormUploader(config)
+  new qiNiu.resume_up.ResumeUploader(config)
 );
 
 const bucketManager = (
