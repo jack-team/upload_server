@@ -16,15 +16,9 @@ interface File {
   filename: string;
 }
 
-const opts: any = {
-  scope: SCOPE
-}
-
 const config: any = (
   new qiNiu.conf.Config()
 );
-
-config.zone = qiNiu.zone.Zone_z1;
 
 const mac = (
   new qiNiu.auth.digest.Mac(
@@ -44,9 +38,11 @@ const bucketManager = (
   new qiNiu.rs.BucketManager(mac, config)
 );
 
-const getToken = () => (
-  new qiNiu.rs.PutPolicy(opts).uploadToken(mac)
-);
+const getToken = () => {
+  const deadline = Math.floor(Date.now() / 1000)+ 3600;
+  const opts: any = { scope: SCOPE,deadline: deadline};
+  return new qiNiu.rs.PutPolicy(opts).uploadToken(mac)
+};
 
 const staticUri = `http://static.yutao2012.com`;
 
@@ -58,7 +54,11 @@ export const upload = (file: File) => (
 
     let fileUrl = `${staticUri}/${filename}`;
 
-    const uploadCallback = (err: Error, body: any, { statusCode }: any) => {
+    const uploadCallback = (
+      err: Error, body: any, info: any
+    ) => {
+      const { statusCode } = info;
+
       if (!!err || statusCode !== 200) {
         return reject('文件上传失败');
       }

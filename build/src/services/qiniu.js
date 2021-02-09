@@ -8,22 +8,23 @@ const fs_1 = __importDefault(require("fs"));
 const qiniu_1 = __importDefault(require("qiniu"));
 const image_size_1 = __importDefault(require("image-size"));
 const qn_json_1 = require("./../../config/qn.json");
-const opts = {
-    scope: qn_json_1.SCOPE
-};
 const config = (new qiniu_1.default.conf.Config());
-config.zone = qiniu_1.default.zone.Zone_z1;
 const mac = (new qiniu_1.default.auth.digest.Mac(qn_json_1.ACCESS_KEY, qn_json_1.SECRET_KEY));
 const putExtra = (new qiniu_1.default.resume_up.PutExtra());
 var uploader = (new qiniu_1.default.resume_up.ResumeUploader(config));
 const bucketManager = (new qiniu_1.default.rs.BucketManager(mac, config));
-const getToken = () => (new qiniu_1.default.rs.PutPolicy(opts).uploadToken(mac));
+const getToken = () => {
+    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const opts = { scope: qn_json_1.SCOPE, deadline: deadline };
+    return new qiniu_1.default.rs.PutPolicy(opts).uploadToken(mac);
+};
 const staticUri = `http://static.yutao2012.com`;
 /*上传到七牛云*/
 exports.upload = (file) => (new Promise((resolve, reject) => {
     const { path, filename, mimetype } = file;
     let fileUrl = `${staticUri}/${filename}`;
-    const uploadCallback = (err, body, { statusCode }) => {
+    const uploadCallback = (err, body, info) => {
+        const { statusCode } = info;
         if (!!err || statusCode !== 200) {
             return reject('文件上传失败');
         }
