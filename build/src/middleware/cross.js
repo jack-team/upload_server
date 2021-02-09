@@ -6,12 +6,11 @@ const crossHeader = {
     'Access-Control-Allow-Headers': 'Content-Type,Content-Length,Authorization,Folder,Accept,X-Requested-With'
 };
 exports.default = async (ctx, next) => {
-    for (let key in crossHeader) {
+    Object.keys(crossHeader).forEach((key) => {
         ctx.set(key, crossHeader[key]);
-    }
-    if (ctx.method === `OPTIONS`) {
+    });
+    if (ctx.method === `OPTIONS`)
         ctx.status = 204;
-    }
     await next();
 };
 //# sourceMappingURL=cross.js.map

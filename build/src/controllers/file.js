@@ -28,14 +28,13 @@ const Services = __importStar(require("./../services"));
 const uploadPath = path_1.default(`/public/upload`);
 exports.default = async (ctx) => {
     const { md5, ext } = ctx.request.body;
-    const fileName = (`${md5}.${ext}`);
-    const filePath = (`${uploadPath}/${fileName}`);
+    const fileName = `${md5}.${ext}`;
+    const filePath = `${uploadPath}/${fileName}`;
     /*如果当前文件还在本地,删除文件*/
     if (fs_1.default.existsSync(filePath)) {
         fs_1.default.unlinkSync(filePath);
     }
-    const url = (await Services.qiNiu.
-        stat(fileName));
+    const url = await Services.qiNiu.stat(fileName);
     ctx.body = {
         code: 200,
         data: { url: url }

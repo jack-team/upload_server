@@ -31,7 +31,7 @@ router.get(`/`, crts.home);
 router.put(`/`, ...crts.upload);
 router.post(`/`, ...crts.upload);
 /*通过md5获取文件*/
-router.post(`/file`, crts.file);
 router.get(`/file`, crts.file);
+router.post(`/file`, crts.file);
 exports.default = router;
 //# sourceMappingURL=index.js.map

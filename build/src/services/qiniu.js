@@ -12,7 +12,6 @@ const opts = {
     scope: qn_json_1.SCOPE
 };
 const config = (new qiniu_1.default.conf.Config());
-config.zone = qiniu_1.default.zone.Zone_z1;
 const mac = (new qiniu_1.default.auth.digest.Mac(qn_json_1.ACCESS_KEY, qn_json_1.SECRET_KEY));
 const putExtra = (new qiniu_1.default.resume_up.PutExtra());
 var uploader = (new qiniu_1.default.form_up.FormUploader(config));
@@ -21,38 +20,34 @@ const getToken = () => (new qiniu_1.default.rs.PutPolicy(opts).uploadToken(mac))
 const staticUri = `http://static.yutao2012.com`;
 /*上传到七牛云*/
 exports.upload = (file) => (new Promise((resolve, reject) => {
-    const { path, filename } = file;
-    let search = ``;
-    const isImg = (file.mimetype.includes('image/'));
-    if (isImg) {
-        const { width, height } = image_size_1.default.imageSize(path);
-        search = `?w=${width}&h=${height}`;
-    }
-    ;
-    const url = (`${staticUri}/${filename}${search}`);
-    const uploadCallback = (e) => {
-        if (!!e) {
-            reject(e.message);
+    const { path, filename, mimetype } = file;
+    let fileUrl = `${staticUri}/${filename}`;
+    const uploadCallback = (err, body, { statusCode }) => {
+        if (!!err || statusCode !== 200) {
+            return reject('文件上传失败');
         }
-        else {
-            resolve(url);
+        const isImage = mimetype.includes('image/');
+        /*
+        * 如果是图片则加上图片的尺寸
+        * */
+        if (isImage) {
+            const { width, height } = image_size_1.default.imageSize(path);
+            fileUrl = `${fileUrl}?width=${width}&height=${height}`;
         }
-        /*删除文件*/
-        if (fs_1.default.existsSync(path)) {
+        resolve(fileUrl);
+        if (fs_1.default.existsSync(path))
             fs_1.default.unlinkSync(path);
-        }
     };
-    /*上传*/
     uploader.putFile(getToken(), filename, path, putExtra, uploadCallback);
 }));
-/*获取文件信息*/
+/*
+* 获取文件是否存在
+* @param fileName 文件名
+* */
 exports.stat = (fileName) => (new Promise((resolve) => {
-    const searchCallback = (err, body, info) => {
-        if (!!err)
-            resolve(``);
-        const { statusCode } = info;
-        return statusCode === 200 ?
-            resolve(`${staticUri}/${fileName}`) : resolve(``);
+    const searchCallback = (err, body, { statusCode }) => {
+        const hasFile = !!err || statusCode !== 200;
+        resolve(hasFile ? `${staticUri}/${fileName}` : '');
     };
     bucketManager.stat(qn_json_1.SCOPE, fileName, searchCallback);
 }));
